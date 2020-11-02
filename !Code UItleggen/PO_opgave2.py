@@ -13,10 +13,3 @@ while teller < aantalGetallen: #Als de variable "teller" kleiner is dan "aantalG
 
 
 
-#1. The program asks the user how many numbers are there (say n)
-#2. The program sets temporary variables called teller and totaal to 0
-#3. While teller is less than n, it does the following:
-    # 1. Ask the user a number
-    # 2. Add the number to totaal 
-    #3. Increase the teller by 1
-#4. Divide the sum (totaal) by n and print it
