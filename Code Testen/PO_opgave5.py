@@ -1,10 +1,12 @@
 import tkinter as tk
 from tkinter import messagebox
 import webbrowser
+from tkinter import PhotoImage
 
-BACKGROUND_COLOR = "pink"
-BUTTON_COLLOR = "lightblue"
+BACKGROUND_COLOR = "lightgrey"
+BUTTON_COLLOR = "grey"
 FONT = ("Open Sans", 24)
+FONT_BOLD = ("Open Sans", 24, "bold")
 HIGHLIGHT_SETTINGS = {"highlightbackground": "black", "highlightcolor": "black", "highlightthickness": 2}
 
 users = {
@@ -16,7 +18,7 @@ users = {
 def create_window():
     window = tk.Tk()
     window.title("Inlog Pagina")
-    window.geometry("500x500")
+    window.state('zoomed')  
 
     screen_width = window.winfo_screenwidth()
     screen_height = window.winfo_screenheight()
@@ -26,34 +28,49 @@ def create_window():
 
     window.configure(bg=BACKGROUND_COLOR)
 
-    username_label = tk.Label(window, text="Gebruikersnaam", font=FONT, bg=BACKGROUND_COLOR)
+    username_label = tk.Label(window, text="Gebruikersnaam:", font=FONT_BOLD, bg=BACKGROUND_COLOR)
     username_label.place(relx=0.5, rely=0.3, anchor='center')
 
     username_entry = tk.Entry(window, font=FONT, **HIGHLIGHT_SETTINGS)
     username_entry.place(relx=0.5, rely=0.4, anchor='center')
 
-    password_label = tk.Label(window, text="Wachtwoord", font=FONT, bg=BACKGROUND_COLOR)
+    password_label = tk.Label(window, text="Wachtwoord:", font=FONT_BOLD, bg=BACKGROUND_COLOR)
     password_label.place(relx=0.5, rely=0.5, anchor='center')
 
     password_entry = tk.Entry(window, show="*", font=FONT, **HIGHLIGHT_SETTINGS)
     password_entry.place(relx=0.5, rely=0.6, anchor='center')
+    
 
     def login():
         username = username_entry.get()
         password = password_entry.get()
-        if username in users and users[username] == password:
-            messagebox.showinfo("Welkom", "Je bent succesvol ingelogd")
-            webbrowser.open('http://www.vanderslik.online')
-            webbrowser.open('https://admin.microsoft.com/#/homepage')
-            window.destroy()
-        retry = messagebox.askretrycancel("Foute inlog", "Wachtwoord of gebruikersnaam is onjuist. Wil je het opnieuw proberen?")
+        if username in users and users[username] == password:     
+            window.destroy()      
+            new_page()
+        else:
+            retry = messagebox.askretrycancel("Foute inlog", "Wachtwoord of gebruikersnaam is onjuist. Wil je het opnieuw proberen?")
         if not retry:
             window.destroy()
+    
+    def new_page():
+        second_window = tk.Tk()
+        second_window.title("Text Editor")
+        second_window.state('zoomed')
 
 
-    login_button = tk.Button(window, text="Login", command=login, font=(FONT, 24), bg=BUTTON_COLLOR, fg='black', borderwidth=2, relief='solid', highlightthickness=0)
-    login_button.place(relx=0.5, rely=0.72, anchor='center')
+        open_website_button = tk.Button(second_window, text="Open Website", command=lambda: webbrowser.open('http://www.example.com'))
+        open_website_button.place(relx=0.5, rely=0.72, anchor='center')
+
+
+    login_button = tk.Button(window, text="Login", command=login, font=(FONT_BOLD), bg=BUTTON_COLLOR, fg='black', borderwidth=2, relief='solid', highlightthickness=0)
+    login_button.place(anchor='center')
+    window.bind('<Return>', lambda event: login())
     window.mainloop()
+
+
+
+
+
 
 if __name__ == "__main__":
     create_window()
